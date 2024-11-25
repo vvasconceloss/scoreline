@@ -6,8 +6,7 @@ export const fetchFootballData = async (dynamicPath, dynamicQuery) => {
     url: `${process.env.API_URL}/${dynamicPath}`,
     params: dynamicQuery,
     headers: {
-      'x-rapidapi-key': process.env.API_KEY,
-      'x-rapidapi-host': process.env.API_HOST
+      'X-Auth-Token': process.env.API_KEY,
     }
   }
 
