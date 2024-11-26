@@ -64,7 +64,7 @@ export const TodayMatch = () => {
   }, [loading]);
 
   return (
-    <div className="flex flex-col w-[40rem] p-5 space-y-5 bg-slate-900 rounded-md">
+    <div className="flex flex-col w-full h-full p-5 space-y-5 bg-slate-900 rounded-md">
     <h1 className="font-semibold">Today's Matches</h1>
     {loading ? (
       <div>Loading...</div>
@@ -72,8 +72,7 @@ export const TodayMatch = () => {
       matches?.map((group: any, key: number) => (
         <Accordion type="multiple" key={key}>
           <AccordionItem value={group?.competition?.code}>
-            <div className="flex items-center justify-between py-5">
-              <AccordionTrigger>{group?.competition?.name}</AccordionTrigger>
+            <div className="flex items-center py-5 space-x-5">
               <div className="w-[3.0rem] h-[3.0rem] rounded-full bg-white flex items-center justify-center">
                 <img
                   src={group?.competition?.emblem}
@@ -81,12 +80,19 @@ export const TodayMatch = () => {
                   className="p-2 w-full h-full object-contain"
                 />
               </div>
+              <div className="flex flex-col">
+                <AccordionTrigger>{group?.competition?.name}</AccordionTrigger>
+                <div className="flex items-center space-x-2">
+                  <img src={group.matches[0].area.flag} alt={`${group.matches[0].area.name}  flag`} className="w-[1.0rem] h-[1.0rem] object-contain" />
+                  <h3 className="text-slate-500">{group.matches[0].area.name} | {group.matches.length} matches</h3>
+                </div>
+              </div>
             </div>
             <AccordionContent className="space-y-5">
               {group?.matches?.map((leagueMatch: any, matchKey: number) => (
                 <div
                   key={matchKey}
-                  className="flex items-center justify-between p-3 rounded-md bg-slate-800"
+                  className="flex items-center justify-between p-3 rounded-md border-2 border-slate-800"
                 >
                   <div className="flex items-center space-x-2 flex-1">
                     <img
@@ -99,7 +105,7 @@ export const TodayMatch = () => {
                   <div className="flex flex-col items-center justify-center flex-1 space-y-1">
                     <h2 className="text-center">{convertDate(leagueMatch?.utcDate)}</h2>
                     <h2 className="text-center">
-                      <Badge variant="default">{leagueMatch?.status}</Badge>
+                      <Badge className="w-14 flex items-center justify-center" variant="default">{leagueMatch?.status}</Badge>
                     </h2>
                   </div>
                   <div className="flex items-center space-x-2 flex-1 justify-end">
