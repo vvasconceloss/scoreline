@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Badge } from "@/components/ui/badge";
 import { getDayMatches } from "@/services/matchesService";
 import {
   Accordion,
@@ -42,6 +43,20 @@ export const TodayMatch = () => {
     }
   };
 
+  const convertDate = (date: string) => {
+    const convertDate = new Date(date);
+
+    let hours: number = convertDate.getUTCHours();
+    let minutes: number = convertDate.getUTCMinutes();
+
+    const formattedHours: string = hours.toString().padStart(2, '0');
+    const formattedMinutes: string = minutes.toString().padStart(2, '0');
+
+    const formattedTime: string = `${formattedHours}h${formattedMinutes}`;
+
+    return formattedTime;
+  }
+
   useEffect(() => {
     if (!loading) {
       getMatches();
@@ -71,7 +86,7 @@ export const TodayMatch = () => {
               {group?.matches?.map((leagueMatch: any, matchKey: number) => (
                 <div
                   key={matchKey}
-                  className="flex items-center justify-between p-2 rounded-md bg-slate-800"
+                  className="flex items-center justify-between p-3 rounded-md bg-slate-800"
                 >
                   <div className="flex items-center space-x-2 flex-1">
                     <img
@@ -81,9 +96,11 @@ export const TodayMatch = () => {
                     />
                     <h1>{leagueMatch?.homeTeam?.name}</h1>
                   </div>
-                  <div className="flex flex-col items-center justify-center flex-1">
-                    <h2 className="text-center">20h30</h2>
-                    <h2 className="text-center">TIMED</h2>
+                  <div className="flex flex-col items-center justify-center flex-1 space-y-1">
+                    <h2 className="text-center">{convertDate(leagueMatch?.utcDate)}</h2>
+                    <h2 className="text-center">
+                      <Badge variant="default">{leagueMatch?.status}</Badge>
+                    </h2>
                   </div>
                   <div className="flex items-center space-x-2 flex-1 justify-end">
                     <h1 className="truncate">{leagueMatch?.awayTeam?.name}</h1>
