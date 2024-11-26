@@ -1,9 +1,9 @@
 import { fetchFootballData } from "../services/footballApiService.js";
 
 export const footballRoutes = async (fastify) => {
-  fastify.get('/:path', async (req, res) => {
+  fastify.get('/*', async (req, res) => {
     try {
-      const dynamicPath = req.params.path;
+      const dynamicPath = req.params['*'];
       const footballData = await fetchFootballData(dynamicPath, req.query);
   
       return res.status(200).send({ footballData });
