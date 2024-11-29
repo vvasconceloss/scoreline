@@ -6,6 +6,17 @@ const getFromCache = (key: string) => {
 };
 
 const saveToCache = (key: string, data: any) => {
+  const oneDayTime = 24 * 60 * 60 * 1000;
+  const lastCacheKey = "lastCacheClearTime";
+
+  const currentDate = Date.now();
+  const lastClearTime = localStorage.getItem(lastCacheKey);
+
+  if (!lastClearTime || currentDate - parseInt(lastClearTime, 10) >= oneDayTime) {
+    localStorage.clear();
+    localStorage.setItem(lastCacheKey, currentDate.toString());
+  }
+
   localStorage.setItem(key, JSON.stringify(data));
 };
 
@@ -77,8 +88,7 @@ export const getMatchesByLeague = async (leagues: Array<string>) => {
           });
         }
 
-        localStorage.setItem(`inProgress-${leagueCode}-matches`, 'true');
-        
+        localStorage.setItem(`inProgress-${leagueCode}-matches`, 'true');        
         const response = await apiClientConfig.get(
           `competitions/${leagueCode}/matches?dateTo=${formattedDate}&dateFrom=${formattedDate}`
         );
